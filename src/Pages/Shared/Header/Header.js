@@ -1,14 +1,35 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
+import { AuthContext } from "../../../contexts/AuthProvider/AuthProvider";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.error(error));
+  };
+
   const page = (
     <>
       <li className="font-semibold">
         <Link to="/">Home</Link>
       </li>
       <li className="font-semibold">
-        <Link to="/login">Login</Link>
+        {user?.uid ? (
+          <>
+            <button onClick={handleLogOut}>LogOut</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+          </>
+        )}
+      </li>
+      <li className="font-semibold">
+        <Link to="/login">{user?.uid ? user.displayName : ""}</Link>
       </li>
     </>
   );
