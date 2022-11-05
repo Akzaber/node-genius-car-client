@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import logpic from "../../assets/images/login/login.svg";
+import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 
 const Signup = () => {
+  const [error, setError] = useState("");
+  const { user, createUser } = useContext(AuthContext);
   const handleSignup = (event) => {
     event.preventDefault();
+    const form = event.target;
+
+    const name = form.name.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(name, email, password);
+
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        form.reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        const errMsg = err.message;
+        setError(errMsg);
+      });
   };
 
   return (
@@ -50,6 +71,9 @@ const Signup = () => {
                 className="input input-bordered"
                 required
               />
+              <label className="label">
+                <p className="text-red-600 font-bold">{error}</p>
+              </label>
               <label className="label">
                 <p>
                   Already have an account?{" "}
