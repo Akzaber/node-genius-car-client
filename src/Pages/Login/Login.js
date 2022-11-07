@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logpic from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
@@ -8,6 +8,10 @@ const Login = () => {
   const { logInUser, signInWithGoogle, signInWithGithub } =
     useContext(AuthContext);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  let from = location.state?.from?.pathname || "/";
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -23,6 +27,7 @@ const Login = () => {
         console.log(user);
         setError("");
         form.reset();
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error(error);
@@ -36,6 +41,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        navigate("/checkout/:id");
       })
       .catch((error) => {
         console.error(error);
@@ -47,6 +53,7 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        navigate("/checkout");
       })
       .catch((error) => {
         console.error(error);
@@ -101,12 +108,16 @@ const Login = () => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <input className="btn btn-primary" type="submit" value="Login" />
+              <input
+                className="btn btn-danger bg-[#FF3811]"
+                type="submit"
+                value="Login"
+              />
               <p className="mt-4 font-semibold">Or Sign In with</p>
               <div>
                 <button
                   onClick={handleGoogleSignIn}
-                  className="mt-4 mr-4  bg-red-600 rounded-full p-4 text-white"
+                  className="mt-4 mr-4  bg-[#FF3811] rounded-full p-4 text-white"
                 >
                   <FaGoogle></FaGoogle>
                 </button>

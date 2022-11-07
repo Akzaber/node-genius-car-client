@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logpic from "../../assets/images/login/login.svg";
 import { AuthContext } from "../../contexts/AuthProvider/AuthProvider";
 
 const Signup = () => {
   const [error, setError] = useState("");
   const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleSignup = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -21,6 +23,7 @@ const Signup = () => {
         console.log(user);
         setError("");
         form.reset();
+        navigate("/checkout");
       })
       .catch((err) => {
         console.error(err);
@@ -89,7 +92,7 @@ const Signup = () => {
             </div>
             <div className="form-control mt-6">
               <input
-                className="btn btn-primary"
+                className="btn btn-danger bg-[#FF3811]"
                 type="submit"
                 value="Sign Up"
               />

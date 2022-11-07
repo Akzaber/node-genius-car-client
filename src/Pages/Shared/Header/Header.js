@@ -28,9 +28,7 @@ const Header = () => {
           </>
         )}
       </li>
-      <li className="font-semibold">
-        <Link to="/login">{user?.uid ? user.displayName : ""}</Link>
-      </li>
+      <li className="font-semibold">{user?.uid && user?.displayName}</li>
     </>
   );
   return (
